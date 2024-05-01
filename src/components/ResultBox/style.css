@@ -1,0 +1,22 @@
+.result-box {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    background-color: #171820;
+    border-radius: 5px;
+    padding: 25px;
+    gap: 1rem;
+}
+
+.result-box h2 {
+    font-size: 1rem;
+}
+
+.result-box p {
+    font-size: 2rem;
+}
+
+.result-box > div {
+    width: 100%;
+}
+
