@@ -3,8 +3,22 @@
   padding: 0;
   box-sizing: border-box;
 }
+
 #root {
   width: 100%;
+}
+
+h1, p {
+  color: #FFF;
+}
+
+.container {
+  width: 100%;
+  min-height: 300px;
+  background-color: aqua;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .image-box {
@@ -39,6 +53,7 @@
   background-color: transparent;
   transition: .2s;
   border: 2px solid white;
+  color: #FFF;
 }
 
 .btn-file:hover {
@@ -51,6 +66,7 @@
   background-color: #0460D9;
   transition: .2s;
   border: none;
+  color: #FFF;
 }
 
 .submit-button:hover {
@@ -91,7 +107,8 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  background-color: #454A59;
+  margin: 30px auto;
 }
 
 #root {
