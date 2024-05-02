@@ -42,6 +42,7 @@ function App() {
       }).catch(err => {
         toast.update(id, { render: "Houve um erro inesperado!", type: "error", isLoading: false, autoClose: 5000 })
         setIsLoading(false)
+        console.log(err)
       }
       )
     }
