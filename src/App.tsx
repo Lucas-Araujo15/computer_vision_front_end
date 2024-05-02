@@ -2,6 +2,8 @@ import { ChangeEvent, useState } from 'react'
 import './App.css'
 import { api } from './lib/axios'
 import ResultBox from './components/ResultBox'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 interface ResponseData {
   identifiedClass: string
@@ -13,10 +15,15 @@ function App() {
   const [file, setFile] = useState<File | null>(null)
   const [response, setResponse] = useState<ResponseData>()
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   async function sendImage(e: ChangeEvent<HTMLFormElement>) {
     e.preventDefault()
     const form = new FormData()
+
+    const id = toast.loading("Analisando a imagem...")
+    setIsLoading(true)
+    setIsModalOpen(false)
 
     if (file !== null) {
       form.append('image', file)
@@ -26,12 +33,17 @@ function App() {
           const data = response.data as ResponseData
           setResponse(data)
           setIsModalOpen(true)
+          setIsLoading(false)
+          toast.update(id, { render: "Concluído!", type: "success", isLoading: false, autoClose: 5000 });
         } else {
-          alert("Error uploading the image")
+          toast.update(id, { render: "Houve um erro inesperado!", type: "error", isLoading: false })
+          setIsLoading(false)
         }
-      }).catch(err => console.log(err))
-
-      console.log(response)
+      }).catch(err => {
+        toast.update(id, { render: "Houve um erro inesperado!", type: "error", isLoading: false })
+        setIsLoading(false)
+      }
+      )
     }
   }
 
@@ -46,11 +58,23 @@ function App() {
 
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <div className='image-box'>
         <h1 className='title'>Selecionar imagem</h1>
         {
           fileUrl === null ?
-          <div className='image-not-found'>
+            <div className='image-not-found'>
               <p>Nenhuma imagem selecionada</p>
             </div>
             :
@@ -59,12 +83,12 @@ function App() {
             </div>
         }
 
-        <ResultBox isModalOpen={isModalOpen} confidence={Math.floor(Number(response?.confidence) * 100)} identifiedClass={response?.identifiedClass}/>
+        <ResultBox isModalOpen={isModalOpen} confidence={Math.floor(Number(response?.confidence) * 100)} identifiedClass={response?.identifiedClass} />
 
         <form className='actions' onSubmit={sendImage}>
           <label className='btn-file' htmlFor='input-file'>Escolher arquivo</label>
-          <input type="file" name='input-file' id='input-file' onChange={handleChange} />
-          <button className='submit-button' type='submit' style={fileUrl === null ? { display: 'none' } : { display: 'block' }}>Enviar</button>
+          <input disabled={isLoading} type="file" name='input-file' id='input-file' onChange={handleChange} />
+          <button disabled={isLoading} className='submit-button' type='submit' style={fileUrl === null ? { display: 'none' } : { display: 'block' }}>Enviar</button>
         </form>
       </div>
     </>
