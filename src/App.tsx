@@ -36,12 +36,13 @@ function App() {
           setIsLoading(false)
           toast.update(id, { render: "Concluído!", type: "success", isLoading: false, autoClose: 5000 });
         } else {
-          toast.update(id, { render: "Houve um erro inesperado!", type: "error", isLoading: false })
+          toast.update(id, { render: "Houve um erro inesperado!", type: "error", isLoading: false, autoClose: 5000 })
           setIsLoading(false)
         }
       }).catch(err => {
-        toast.update(id, { render: "Houve um erro inesperado!", type: "error", isLoading: false })
+        toast.update(id, { render: "Houve um erro inesperado!", type: "error", isLoading: false, autoClose: 5000 })
         setIsLoading(false)
+        console.log(err)
       }
       )
     }
